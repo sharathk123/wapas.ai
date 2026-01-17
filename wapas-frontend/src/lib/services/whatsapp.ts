@@ -32,7 +32,7 @@ export const sendAudio = async (to: string, audioBuffer: Buffer) => {
         );
 
         const mediaId = uploadResponse.data.id;
-        console.log(`Media uploaded: ${mediaId}`);
+
 
         // Step 2: Send audio message
         const sendResponse = await axios.post(
@@ -52,8 +52,9 @@ export const sendAudio = async (to: string, audioBuffer: Buffer) => {
             }
         );
 
-        const messageId = sendResponse.data.messages?.[0]?.id;
-        console.log(`WhatsApp sent: ${messageId}`);
+        if (sendResponse.status !== 200) {
+            throw new Error(`WhatsApp API Error: ${sendResponse.statusText}`);
+        }
 
         return true;
 

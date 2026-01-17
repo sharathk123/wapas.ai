@@ -14,7 +14,7 @@ export const POST = async (req: Request) => {
             return new NextResponse('Unauthorized', { status: 401 });
         }
 
-        console.log('Webhook received and verified');
+
         const data = JSON.parse(rawBody);
 
         // 2. Extract customer data
@@ -59,7 +59,7 @@ export const POST = async (req: Request) => {
         };
         const lang = stateLanguageMap[customer.province] || 'en-IN';
 
-        console.log(`Processing: ${customer.name} | Phone: ${customer.phone} | Lang: ${lang}`);
+
 
         // 4. Generate voice script and audio
         const script = generateScript(customer.name, lang);
@@ -85,7 +85,7 @@ export const POST = async (req: Request) => {
 
         // 6. Log result
         if (sent) {
-            console.log(`Voice note delivered to ${customer.phone}`);
+
             await supabase.from('recoveries').insert({
                 shopify_checkout_id: customer.checkoutId,
                 customer_phone: customer.phone,

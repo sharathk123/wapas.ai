@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import SuperAdminView from '../SuperAdminView';
 import '@testing-library/jest-dom';
 
@@ -37,19 +37,19 @@ jest.mock('@/lib/supabase/client', () => ({
 
 // Mock simple UI components to avoid Radix complexity
 jest.mock('@/components/ui/button', () => ({
-    Button: ({ children, onClick, className, disabled, ...props }: any) => (
+    Button: ({ children, onClick, className, disabled, ...props }: { children: React.ReactNode, onClick?: () => void, className?: string, disabled?: boolean }) => (
         <button onClick={onClick} className={className} disabled={disabled} {...props}>{children}</button>
     )
 }));
 jest.mock('@/components/ui/badge', () => ({
-    Badge: ({ children }: any) => <span>{children}</span>
+    Badge: ({ children }: { children: React.ReactNode }) => <span>{children}</span>
 }));
 jest.mock('@/components/ui/card', () => ({
-    Card: ({ children }: any) => <div>{children}</div>,
-    CardContent: ({ children }: any) => <div>{children}</div>
+    Card: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    CardContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }));
 jest.mock('@/components/ui/switch', () => ({
-    Switch: ({ checked, onCheckedChange }: any) => (
+    Switch: ({ checked, onCheckedChange }: { checked: boolean, onCheckedChange: (checked: boolean) => void }) => (
         <label>
             <input type="checkbox" checked={checked} onChange={() => onCheckedChange(!checked)} />
             Switch
@@ -60,20 +60,20 @@ jest.mock('@/components/ui/switch', () => ({
 // Mock Dropdown for easier testing of actions
 // We render the content immediately for testing purposes, or use a simple toggle
 jest.mock('@/components/ui/dropdown-menu', () => ({
-    DropdownMenu: ({ children }: any) => <div>{children}</div>,
-    DropdownMenuTrigger: ({ children }: any) => <div>{children}</div>,
-    DropdownMenuContent: ({ children }: any) => <div data-testid="dropdown-content">{children}</div>,
-    DropdownMenuItem: ({ children, onClick }: any) => <div onClick={onClick} role="menuitem">{children}</div>,
-    DropdownMenuLabel: ({ children }: any) => <div>{children}</div>,
+    DropdownMenu: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div data-testid="dropdown-content">{children}</div>,
+    DropdownMenuItem: ({ children, onClick }: { children: React.ReactNode, onClick: () => void }) => <div onClick={onClick} role="menuitem">{children}</div>,
+    DropdownMenuLabel: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     DropdownMenuSeparator: () => <hr />,
 }));
 jest.mock('@/components/ui/dialog', () => ({
-    Dialog: ({ children, open }: any) => open ? <div>{children}</div> : null,
-    DialogContent: ({ children }: any) => <div>{children}</div>,
-    DialogHeader: ({ children }: any) => <div>{children}</div>,
-    DialogTitle: ({ children }: any) => <div>{children}</div>,
-    DialogDescription: ({ children }: any) => <div>{children}</div>,
-    DialogFooter: ({ children }: any) => <div>{children}</div>,
+    Dialog: ({ children, open }: { children: React.ReactNode, open: boolean }) => open ? <div>{children}</div> : null,
+    DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DialogTitle: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DialogDescription: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DialogFooter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 describe('SuperAdminView', () => {
@@ -111,7 +111,7 @@ describe('SuperAdminView', () => {
                 order: jest.fn().mockImplementation(() => {
                     return {
                         // This handles merchants
-                        then: (callback: any) => callback({ data: mockMerchants, error: null }),
+                        then: (callback: (args: { data: typeof mockMerchants, error: null }) => void) => callback({ data: mockMerchants, error: null }),
                         // This handles logs (since logs has .limit)
                         limit: jest.fn().mockResolvedValue({ data: mockLogs, error: null })
                     }
@@ -144,7 +144,7 @@ describe('SuperAdminView', () => {
         });
 
         // Use the mocked dropdown content which is always rendered in our mock
-        const dropdownContent = screen.getByTestId('dropdown-content');
+        screen.getByTestId('dropdown-content');
 
         // Assertions for presence
         expect(screen.getByText('Suspend')).toBeInTheDocument();
