@@ -45,7 +45,7 @@ export default function PrivacyPage() {
                     <section>
                         <h2 className="text-2xl font-semibold text-white mb-4">3. Data Retention</h2>
                         <p className="leading-relaxed">
-                            We retain your personal data and your customers' data only for as long as is necessary for the purposes set out in this Privacy Policy.
+                            We retain your personal data and your customers&apos; data only for as long as is necessary for the purposes set out in this Privacy Policy.
                             We will retain and use your data to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our legal agreements and policies.
                         </p>
                     </section>

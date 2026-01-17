@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+
 import { ArrowLeft } from 'lucide-react'
 
 export default function TermsPage() {
@@ -24,7 +24,7 @@ export default function TermsPage() {
                     <section>
                         <h2 className="text-2xl font-semibold text-white mb-4">1. Acceptance of Terms</h2>
                         <p className="leading-relaxed">
-                            By accessing or using Wapas.ai ("the Service"), you agree to be bound by these Terms of Service.
+                            By accessing or using Wapas.ai (&quot;the Service&quot;), you agree to be bound by these Terms of Service.
                             If you disagree with any part of the terms, you may not access the Service.
                         </p>
                     </section>

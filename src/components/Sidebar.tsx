@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -40,7 +40,7 @@ const navItems = [
 
 export function Sidebar({ user, credits }: SidebarProps) {
     const pathname = usePathname()
-    const router = useRouter()
+
     const supabase = createClient()
 
     const handleSignOut = async () => {
