@@ -10,6 +10,7 @@ import {
     ShieldCheck,
     LogOut
 } from 'lucide-react'
+import { signOut } from '@/app/auth/actions'
 
 const navItems = [
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
@@ -21,8 +22,7 @@ export function AdminSidebar() {
     const supabase = createClient()
 
     const handleSignOut = async () => {
-        await supabase.auth.signOut()
-        router.push('/login')
+        await signOut()
     }
 
     return (

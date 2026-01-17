@@ -16,6 +16,7 @@ import {
     Coins,
     ShieldCheck
 } from 'lucide-react'
+import { signOut } from '@/app/auth/actions'
 import React from 'react'
 
 interface SidebarProps {
@@ -43,8 +44,7 @@ export function Sidebar({ user, credits }: SidebarProps) {
     const supabase = createClient()
 
     const handleSignOut = async () => {
-        await supabase.auth.signOut()
-        router.push('/login')
+        await signOut()
     }
 
     const initials = user.user_metadata?.full_name
