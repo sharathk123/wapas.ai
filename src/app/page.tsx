@@ -168,8 +168,8 @@ export default function LandingPage() {
             <span className="text-sm text-slate-400">© 2025 Wapas.ai</span>
           </div>
           <div className="flex gap-6 text-sm text-slate-500">
-            <Link href="#" className="hover:text-slate-300">Privacy Policy</Link>
-            <Link href="#" className="hover:text-slate-300">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-slate-300">Terms of Service</Link>
             <Link href="#" className="hover:text-slate-300">Contact</Link>
           </div>
         </div>
