@@ -38,17 +38,18 @@ jest.mock('@/lib/supabase/client', () => ({
 
 // Mock UI components that might be problematic or heavy
 jest.mock('@/components/ui/button', () => ({
-    Button: ({ children, onClick, className }: any) => (
+    Button: ({ children, onClick, className }: { children: React.ReactNode, onClick?: () => void, className?: string }) => (
         <button onClick={onClick} className={className}>{children}</button>
     )
 }));
 jest.mock('@/components/ui/avatar', () => ({
-    Avatar: ({ children }: any) => <div>{children}</div>,
-    AvatarImage: ({ src }: any) => <img src={src} alt="avatar" />,
-    AvatarFallback: ({ children }: any) => <div>{children}</div>
+    Avatar: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    // eslint-disable-next-line @next/next/no-img-element
+    AvatarImage: ({ src }: { src?: string }) => <img src={src} alt="avatar" />,
+    AvatarFallback: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }));
 jest.mock('@/components/ui/badge', () => ({
-    Badge: ({ children }: any) => <span>{children}</span>
+    Badge: ({ children }: { children: React.ReactNode }) => <span>{children}</span>
 }));
 
 

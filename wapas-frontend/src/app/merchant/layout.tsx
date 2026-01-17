@@ -3,8 +3,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Sidebar } from '@/components/Sidebar'
-import { WaitingRoom } from '@/components/WaitingRoom'
-import { AccessDenied } from '@/components/AccessDenied'
+// import { WaitingRoom } from '@/components/WaitingRoom'
+// import { AccessDenied } from '@/components/AccessDenied'
 import { Loader2 } from 'lucide-react'
 
 interface Merchant {
@@ -33,7 +33,6 @@ export default function DashboardLayout({
     const [user, setUser] = useState<User | null>(null)
     const [merchant, setMerchant] = useState<Merchant | null>(null)
     const [loading, setLoading] = useState(true)
-    const [refreshing, setRefreshing] = useState(false)
     const supabase = createClient()
 
     const fetchMerchantData = useCallback(async (userId: string) => {
@@ -89,16 +88,7 @@ export default function DashboardLayout({
         loadData()
     }, [loadData])
 
-    const handleRefresh = async () => {
-        setRefreshing(true)
-        if (user) {
-            const merchantData = await fetchMerchantData(user.id)
-            if (merchantData) {
-                setMerchant(merchantData)
-            }
-        }
-        setRefreshing(false)
-    }
+
 
     // Loading state
     if (loading) {
@@ -118,6 +108,10 @@ export default function DashboardLayout({
         )
     }
 
+    // Simplified: No waiting room, all merchants get access immediately
+    // If you need to re-enable gates, uncomment the logic below.
+
+    /*
     // Gatekeeper: Pending status
     if (merchant.approval_status === 'pending') {
         return <WaitingRoom onRefresh={handleRefresh} isLoading={refreshing} />
@@ -127,6 +121,7 @@ export default function DashboardLayout({
     if (merchant.approval_status === 'rejected') {
         return <AccessDenied />
     }
+    */
 
     // Approved: Full dashboard
     return (

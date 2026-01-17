@@ -106,31 +106,7 @@ export default function SuperAdminView() {
         return phone
     }
 
-    const handleApprove = async (merchant: Merchant) => {
-        setActionLoading(merchant.id)
-        const { error } = await supabase
-            .from('merchants')
-            .update({ approval_status: 'approved', is_active: true })
-            .eq('id', merchant.id)
 
-        if (!error) {
-            fetchMerchants()
-        }
-        setActionLoading(null)
-    }
-
-    const handleReject = async (merchant: Merchant) => {
-        setActionLoading(merchant.id)
-        const { error } = await supabase
-            .from('merchants')
-            .update({ approval_status: 'rejected', is_active: false })
-            .eq('id', merchant.id)
-
-        if (!error) {
-            fetchMerchants()
-        }
-        setActionLoading(null)
-    }
 
     const handleSuspend = async (merchant: Merchant) => {
         setActionLoading(merchant.id)
@@ -373,20 +349,7 @@ export default function SuperAdminView() {
                                                     <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800">
                                                         <DropdownMenuLabel className="text-slate-400">Actions</DropdownMenuLabel>
                                                         <DropdownMenuSeparator className="bg-slate-800" />
-                                                        <DropdownMenuItem
-                                                            className="text-green-400 focus:text-green-300 focus:bg-green-500/10"
-                                                            onClick={() => handleApprove(merchant)}
-                                                        >
-                                                            <CheckCircle className="w-4 h-4 mr-2" />
-                                                            Approve
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem
-                                                            className="text-red-400 focus:text-red-300 focus:bg-red-500/10"
-                                                            onClick={() => handleReject(merchant)}
-                                                        >
-                                                            <XCircle className="w-4 h-4 mr-2" />
-                                                            Reject
-                                                        </DropdownMenuItem>
+
                                                         <DropdownMenuItem
                                                             className="text-amber-400 focus:text-amber-300 focus:bg-amber-500/10"
                                                             onClick={() => handleSuspend(merchant)}
