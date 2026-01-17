@@ -170,7 +170,7 @@ export default function LandingPage() {
           <div className="flex gap-6 text-sm text-slate-500">
             <Link href="/privacy" className="hover:text-slate-300">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-slate-300">Terms of Service</Link>
-            <Link href="#" className="hover:text-slate-300">Contact</Link>
+            <Link href="mailto:support@wapas.ai" className="hover:text-slate-300">Contact</Link>
           </div>
         </div>
       </footer>
