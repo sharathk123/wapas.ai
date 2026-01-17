@@ -6,12 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ShoppingCart, DollarSign, Phone, TrendingUp } from 'lucide-react'
 
-interface MerchantStats {
-    total_carts: number
-    calls_made: number
-    potential_revenue: number
-    failed_calls: number
-}
+import { MerchantStats } from '@/types'
+
+
 
 export default function DashboardOverview() {
     const [stats, setStats] = useState<MerchantStats | null>(null)
@@ -157,6 +154,7 @@ export default function DashboardOverview() {
                     </CardContent>
                 </Card>
             </div>
+
         </div>
     )
 }

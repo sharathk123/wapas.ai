@@ -13,11 +13,14 @@ import {
     CreditCard,
     FileText,
     LogOut,
-    Coins
+    Coins,
+    ShieldCheck
 } from 'lucide-react'
+import React from 'react'
 
 interface SidebarProps {
     user: {
+        id: string
         email?: string
         user_metadata?: {
             avatar_url?: string
@@ -28,10 +31,10 @@ interface SidebarProps {
 }
 
 const navItems = [
-    { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-    { href: '/dashboard/integration', label: 'Integration', icon: Settings },
-    { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
-    { href: '/dashboard/logs', label: 'Call Logs', icon: FileText },
+    { href: '/merchant', label: 'Overview', icon: LayoutDashboard },
+    { href: '/merchant/integrations', label: 'Integrations', icon: Settings },
+    { href: '/merchant/billing', label: 'Billing', icon: CreditCard },
+    { href: '/merchant/logs', label: 'Call Logs', icon: FileText },
 ]
 
 export function Sidebar({ user, credits }: SidebarProps) {
@@ -50,17 +53,50 @@ export function Sidebar({ user, credits }: SidebarProps) {
         .join('')
         .toUpperCase() || user.email?.[0].toUpperCase() || '?'
 
+    // Check if user is admin (this is a client-side convenience check, actual protection is in middleware/page)
+    const [isAdmin, setIsAdmin] = React.useState(false)
+
+    React.useEffect(() => {
+        const checkAdmin = async () => {
+            if (user.id) {
+                const { data } = await supabase
+                    .from('app_admins')
+                    .select('id')
+                    .eq('id', user.id)
+                    .single()
+                if (data) setIsAdmin(true)
+            }
+        }
+        checkAdmin()
+    }, [user.id, supabase])
+
     return (
         <aside className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen sticky top-0">
             {/* Logo */}
             <div className="p-4 border-b border-slate-800">
-                <Link href="/dashboard" className="flex items-center gap-2">
+                <Link href="/merchant" className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                         <span className="text-white font-bold text-sm">W</span>
                     </div>
                     <span className="text-lg font-bold text-white">Wapas.ai</span>
                 </Link>
             </div>
+
+            {/* Admin Switcher */}
+            {isAdmin && (
+                <div className="p-2 mx-2 mt-2 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <Link href="/admin">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/20"
+                        >
+                            <ShieldCheck className="w-4 h-4 mr-2" />
+                            Super Admin Console
+                        </Button>
+                    </Link>
+                </div>
+            )}
 
             {/* User Info */}
             <div className="p-4 border-b border-slate-800">
@@ -85,7 +121,7 @@ export function Sidebar({ user, credits }: SidebarProps) {
             <nav className="flex-1 p-4 space-y-1">
                 {navItems.map((item) => {
                     const isActive = pathname === item.href ||
-                        (item.href !== '/dashboard' && pathname.startsWith(item.href))
+                        (item.href !== '/merchant' && pathname.startsWith(item.href))
                     const Icon = item.icon
 
                     return (
@@ -115,7 +151,7 @@ export function Sidebar({ user, credits }: SidebarProps) {
                             {credits}
                         </Badge>
                     </div>
-                    <Link href="/dashboard/billing">
+                    <Link href="/merchant/billing">
                         <Button size="sm" variant="ghost" className="w-full text-indigo-400 hover:text-indigo-300 hover:bg-indigo-600/10">
                             Buy More Credits
                         </Button>

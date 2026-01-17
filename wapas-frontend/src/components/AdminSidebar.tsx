@@ -6,15 +6,13 @@ import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
-    Users,
-    FileText,
-    LogOut,
-    ShieldCheck
+    LayoutDashboard,
+    ShieldCheck,
+    LogOut
 } from 'lucide-react'
 
 const navItems = [
-    { href: '/admin', label: 'Merchants', icon: Users },
-    { href: '/admin/logs', label: 'System Logs', icon: FileText },
+    { href: '/admin', label: 'Overview', icon: LayoutDashboard },
 ]
 
 export function AdminSidebar() {
@@ -77,7 +75,7 @@ export function AdminSidebar() {
 
             {/* Quick Link to Merchant Dashboard */}
             <div className="p-4 border-t border-slate-800">
-                <Link href="/dashboard">
+                <Link href="/merchant">
                     <Button
                         variant="ghost"
                         className="w-full justify-start text-slate-400 hover:text-white hover:bg-slate-800"

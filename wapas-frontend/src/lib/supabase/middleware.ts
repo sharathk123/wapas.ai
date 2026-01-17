@@ -34,14 +34,14 @@ export async function updateSession(request: NextRequest) {
 
     const pathname = request.nextUrl.pathname
 
-    // Protect dashboard routes
-    if (!user && pathname.startsWith('/dashboard')) {
+    // Protect merchant routes (standard auth)
+    if (!user && pathname.startsWith('/merchant')) {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
         return NextResponse.redirect(url)
     }
 
-    // Protect admin routes - check if user is in app_admins table
+    // Protect admin routes (strict rls/claim check)
     if (pathname.startsWith('/admin')) {
         if (!user) {
             const url = request.nextUrl.clone()
@@ -49,7 +49,6 @@ export async function updateSession(request: NextRequest) {
             return NextResponse.redirect(url)
         }
 
-        // Check if user is an admin
         const { data: adminRecord } = await supabase
             .from('app_admins')
             .select('id')
@@ -57,9 +56,8 @@ export async function updateSession(request: NextRequest) {
             .single()
 
         if (!adminRecord) {
-            // Not an admin - redirect to dashboard (or 404)
             const url = request.nextUrl.clone()
-            url.pathname = '/dashboard'
+            url.pathname = '/merchant'
             return NextResponse.redirect(url)
         }
     }
@@ -67,10 +65,10 @@ export async function updateSession(request: NextRequest) {
     // Redirect logged-in users away from login page
     if (user && pathname === '/login') {
         const url = request.nextUrl.clone()
-        url.pathname = '/dashboard'
+        // Default to merchant dashboard, admins can switch manually
+        url.pathname = '/merchant'
         return NextResponse.redirect(url)
     }
 
     return supabaseResponse
 }
-

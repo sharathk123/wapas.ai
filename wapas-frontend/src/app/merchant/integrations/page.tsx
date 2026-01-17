@@ -186,7 +186,7 @@ export default function IntegrationPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="bg-slate-800 rounded-lg p-3 font-mono text-sm text-slate-300 break-all">
-                        https://wapas-backend-live.onrender.com/webhooks/shopify/checkout-update
+                        {typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/shopify` : '/api/webhooks/shopify'}
                     </div>
                     <p className="text-xs text-slate-500 mt-2">
                         Event: <Badge variant="outline" className="ml-1 border-slate-600">checkouts/update</Badge>
